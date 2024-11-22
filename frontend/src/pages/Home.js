@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { getArticles } from '../services/articleService';  // Implement this service to fetch articles
+import { fetchArticles } from '../services/articleService';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      const fetchedArticles = await getArticles();
-      setArticles(fetchedArticles);
+    const fetchAllArticles = async () => {
+      try {
+        const data = await fetchArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error(error.message);
+      }
     };
-    fetchArticles();
+
+    fetchAllArticles();
   }, []);
 
   return (
     <div>
-      <h2>Home</h2>
-      <div>
-        {articles.map((article) => (
-          <div key={article._id}>
-            <h3>{article.title}</h3>
-            <p>{article.body}</p>
-          </div>
-        ))}
-      </div>
+      <h1>Articles</h1>
+      {articles.map((article) => (
+        <div key={article._id}>
+          <h2>{article.title}</h2>
+          <Link to={`/articles/${article._id}`}>Read More</Link>
+        </div>
+      ))}
     </div>
   );
 };
