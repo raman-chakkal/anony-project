@@ -1,20 +1,21 @@
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-dotenv.config();
 
-const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1];
+// Middleware to authenticate JWT
+const authenticateJWT = (req, res, next) => {
+    const token = req.header('Authorization') && req.header('Authorization').split(' ')[1]; // Extract Bearer token
+
     if (!token) {
-        return res.status(401).json({ message: 'No token provided' });
+        return res.status(403).json({ message: 'Access Denied' }); // No token provided
     }
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch (err) {
-        res.status(403).json({ message: 'Invalid or expired token' });
-    }
+    // Verify the token
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid Token' });
+        }
+        req.user = user; // Attach user data to request
+        next(); // Proceed to the next middleware or route handler
+    });
 };
 
-module.exports = authMiddleware;
+module.exports = authenticateJWT;
