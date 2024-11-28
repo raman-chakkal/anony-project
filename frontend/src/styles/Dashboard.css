@@ -1,0 +1,17 @@
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+}
+
+.dashboard-body {
+    display: grid;
+    grid-template-columns: 250px 1fr; /* Sidebar and Main content */
+    height: 100%;
+}
+
+.main-content {
+    padding: 20px;
+    overflow-y: auto;
+}
