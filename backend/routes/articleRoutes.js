@@ -14,7 +14,7 @@ router.get('/articles', articleController.getAllArticles);
 router.get('/my-articles', authenticateJWT, articleController.getUserArticles);
 
 // Get a single article by its ID
-router.get('/:id', articleController.getArticleById);
+router.get('/articles/:id', articleController.getArticleById);
 
 // Search Articles
 router.get('/search', articleController.searchArticles);

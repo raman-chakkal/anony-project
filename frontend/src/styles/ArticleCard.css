@@ -1,19 +1,48 @@
 /* ArticleCard.css */
+
 .article-card {
-    border: 1px solid #ddd;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    background-color: #ffffff; /* White background for the card */
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 16px; /* Padding inside the card */
+    margin: 16px 0; /* Margin between cards */
+    transition: transform 0.2s; /* Smooth scaling effect on hover */
+}
+
+.article-card:hover {
+    transform: scale(1.02); /* Slightly scale up on hover */
 }
 
 .article-card h3 {
-    margin: 0 0 10px;
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Font size for the title */
+    color: #333; /* Dark gray color for the title */
+    cursor: pointer; /* Pointer cursor for clickable title */
+    margin: 0 0 8px; /* Margin below the title */
 }
 
 .article-card p {
-    font-size: 1rem;
-    color: #333;
+    font-size: 1rem; /* Font size for the preview content */
+    color: #666; /* Medium gray color for the content */
+    margin: 0 0 16px; /* Margin below the content */
+}
+
+.article-card button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px 12px; /* Padding inside the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.2s; /* Smooth background color transition */
+    margin-right: 8px; /* Space between buttons */
+}
+
+.article-card button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.article-card button:disabled {
+    background-color: #cccccc; /* Gray color for disabled buttons */
+    cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
 }

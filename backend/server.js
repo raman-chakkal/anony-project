@@ -11,7 +11,8 @@ dotenv.config();
 connectDB();  // Connect to MongoDB
 
 app.use(cors({
-    origin: 'http://localhost:3000',  // Allow frontend from localhost:3000 only
+    origin: 'http://localhost:3000', // Allow frontend from localhost:3000 only
+    credentials: true 
 }));
 app.use(express.json());  // Middleware to parse JSON requests
 app.use('/api', authRoutes);  // Authentication routes

@@ -1,53 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
+import MyArticleCard from './MyArticleCard'; // Import the new MyArticleCard component
 
 const MyArticles = () => {
-    const [articles, setArticles] = useState([]);   // State to hold articles
-    const [loading, setLoading] = useState(true);    // Loading state for fetching data
-    const [error, setError] = useState(null);        // Error state for any issues during fetching
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate(); // Use useNavigate
 
     useEffect(() => {
-        const fetchUserArticles = async () => {
+        const fetchMyArticles = async () => {
             try {
+                const token = localStorage.getItem('token'); // Retrieve the token from localStorage
                 const response = await axios.get('http://localhost:5000/api/my-articles', {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,  // JWT token stored in localStorage
-                    },
+                        Authorization: `Bearer ${token}` // Include the token in the headers
+                    }
                 });
-                setArticles(response.data);  // Set the fetched articles
+                setArticles(response.data);
             } catch (err) {
-                console.error('Error fetching user articles:', err);
-                setError('Failed to load articles. Please try again later.'); // Set error message
+                console.error('Error fetching articles:', err);
             } finally {
-                setLoading(false);  // Stop the loading spinner once the request is completed
+                setLoading(false); // Ensure loading is set to false in both success and error cases
             }
         };
 
-        fetchUserArticles();
-    }, []);  // Empty dependency array, will only run once on component mount
+        fetchMyArticles();
+    }, []);
 
-    // Show a loading indicator while fetching data
-    if (loading) {
-        return <p>Loading articles...</p>;
-    }
+    const handleEdit = (articleId) => {
+        navigate(`/edit-article/${articleId}`); // Use navigate instead of history.push
+    };
 
-    // Show error message if there's an error
-    if (error) {
-        return <p>{error}</p>;
-    }
+    const handleDelete = async (articleId) => {
+        if (window.confirm('Are you sure you want to delete this article?')) {
+            try {
+                await axios.delete(`http://localhost:5000/api/articles/${articleId}`); // Adjust the endpoint as needed
+                setArticles(articles.filter(article => article._id !== articleId)); // Remove the deleted article from state
+            } catch (err) {
+                console.error('Error deleting article:', err);
+            }
+        }
+    };
+
+    if (loading) return <p>Loading your articles...</p>;
 
     return (
         <div>
             <h2>My Articles</h2>
             {articles.length === 0 ? (
-                <p>No articles found.</p>  // If no articles are found
+                <p>You have not posted any articles yet.</p>
             ) : (
                 articles.map((article) => (
-                    <div key={article._id}>
-                        <h3>{article.title}</h3>
-                        <p>{article.content}</p>
-                        {/* You can add edit and delete buttons here */}
-                    </div>
+                    <MyArticleCard 
+                        key={article._id} 
+                        article={article} 
+                        onEdit={() => handleEdit(article._id)} 
+                        onDelete={() => handleDelete(article._id)} 
+                    />
                 ))
             )}
         </div>

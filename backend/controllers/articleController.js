@@ -70,25 +70,36 @@ const getArticleById = async (req, res) => {
     }
 };
 
-// Search articles by title or content
+// Search for articles by title or content
 const searchArticles = async (req, res) => {
-    const { query } = req.query;  // Get search query from request
+    const { query } = req.query; // Get the search query
 
     try {
-        // Search articles by title or content, case-insensitive search
+        // Ensure the query is provided
+        if (!query) {
+            return res.status(400).json({ message: 'Search query is required' });
+        }
+
+        // Search articles in both title and content fields, ignoring case
         const articles = await Article.find({
             $or: [
-                { title: { $regex: query, $options: 'i' } }
-            ],
-            deleted: false  // Make sure the article is not deleted
-        }).populate('author', 'name');
+                { title: { $regex: query, $options: 'i' } },
+                { content: { $regex: query, $options: 'i' } }
+            ]
+        }).populate('author', 'name'); // Populate the author's name field
 
-        res.json(articles);  // Return the matched articles
+        if (articles.length === 0) {
+            return res.status(404).json({ message: `No articles found for "${query}"` });
+        }
+
+        // Return search results
+        res.json(articles);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error searching for articles', error });
+        console.error('Error fetching search results:', error);
+        res.status(500).json({ message: 'Error searching articles', error });
     }
 };
+
 
 // Edit an article
 const editArticle = async (req, res) => {

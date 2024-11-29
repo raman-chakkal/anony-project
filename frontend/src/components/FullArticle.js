@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -21,7 +21,7 @@ const FullArticle = () => {
         fetchArticle();
     }, [id]);  // Re-fetch article when the ID changes
 
-    if (loading) return <p>Loading...</p>;  // Display loading message until article is fetched
+    if (!article) return <p>Loading...</p>;  // Display loading message until article is fetched
 
     return (
         <div>
