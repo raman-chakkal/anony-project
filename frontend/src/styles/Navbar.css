@@ -1,44 +1,109 @@
+/* General Navbar Styles */
 .navbar {
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    align-items: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.search-container {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea; /* Subtle divider */
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Minimal depth effect */
 }
 
-.search-container input {
-    padding: 5px;
+/* Logo Styling */
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333333; /* Neutral color for readability */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.logo:hover {
+    color: #635757; /* Slight hover color change for elegance */
+}
+
+/* Search Form Container */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between input and button */
+    width: 100%; /* Ensures it adjusts responsively */
+    max-width: 400px; /* Restricts the form to a reasonable size */
+}
+
+/* Search Input Field */
+.search-form input {
+    flex: 1; /* Input expands to fill available space */
+    padding: 0.6rem;
+    border: 1px solid #dddddd; /* Neutral border */
+    border-radius: 4px;
     font-size: 1rem;
+    transition: border-color 0.3s ease; /* Smooth focus effect */
 }
 
-.search-container button {
-    padding: 5px 10px;
+.search-form input:focus {
+    border-color: #007BFF; /* Highlight on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Subtle glow */
+}
+
+/* Search Button */
+.search-form button {
+    width: 100px; /* Fixed button width */
+    padding: 0.6rem;
     font-size: 1rem;
-    margin-left: 5px;
+    border: none;
+    background-color: #333333; /* Dark neutral color */
+    color: #ffffff; /* White text for contrast */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out; /* Smooth hover effect */
 }
 
+.search-form button:hover {
+    background-color: #5a5a5a; /* Slightly lighter hover effect */
+}
+
+/* Navigation Links */
 .nav-links {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem; /* Space between links */
 }
 
-.nav-links a {
-    color: white;
-    margin-left: 15px;
+.nav-link {
+    font-size: 1rem;
     text-decoration: none;
+    color: #333333;
+    transition: color 0.3s ease; /* Smooth hover effect */
 }
 
-.nav-links a:hover {
-    text-decoration: underline;
+.nav-link:hover {
+    color: #007BFF; /* Highlight link on hover */
+}
+
+/* Responsive Styles for Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .search-form {
+        width: 100%; /* Form spans full width */
+        margin-top: 0.5rem;
+    }
+
+    .search-form input {
+        width: 100%; /* Input adapts to full width */
+    }
+
+    .nav-links {
+        flex-direction: column; /* Stack links vertically */
+        align-items: flex-start;
+        gap: 1rem; /* Space between links */
+        margin-top: 1rem;
+    }
 }

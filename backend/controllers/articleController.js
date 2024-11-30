@@ -155,7 +155,7 @@ const deleteArticle = async (req, res) => {
         }
 
         // Soft delete the article
-        article.deleted = true;
+        article.deleted = true; // Mark the article as deleted
         await article.save();
 
         res.json({ message: 'Article deleted successfully' });

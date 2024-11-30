@@ -21,8 +21,10 @@ const FullArticle = () => {
         fetchArticle();
     }, [id]);  // Re-fetch article when the ID changes
 
-    if (!article) return <p>Loading...</p>;  // Display loading message until article is fetched
+    if (loading) return <p>Loading...</p>;  // Display loading message until article is fetched
 
+    if (!article) return <p>Article not found.</p>;  // Handle case where article is not found
+    
     return (
         <div>
             <h2>{article.title}</h2>

@@ -3,27 +3,25 @@ import axios from 'axios';
 
 const Profile = ({ user, updateUser }) => {
     const [formData, setFormData] = useState({
-        name: user.name,
-        email: user.email
+        name: user?.name || '',
+        email: user?.email || '',
     });
     const [isEditing, setIsEditing] = useState(false);
-    const [loading, setLoading] = useState(true); // Track loading state
-    const [error, setError] = useState(null); // Track error state
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // Fetch user profile data on component mount
     useEffect(() => {
-        // Fetch profile data from the backend when the component mounts
         const fetchProfile = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/profile', {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`, // Send the token from localStorage
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
                 });
-                // Update the profile data from the response
                 setFormData({
                     name: response.data.name,
-                    email: response.data.email
+                    email: response.data.email,
                 });
                 setLoading(false);
             } catch (err) {
@@ -38,27 +36,23 @@ const Profile = ({ user, updateUser }) => {
     const handleChange = (e) => {
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
         try {
-            // Update profile on the backend (optional)
-            await axios.put(
-                'http://localhost:5000/api/profile', 
-                formData, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                }
-            );
-            updateUser(formData); // Update user data in the parent component
+            await axios.put('http://localhost:5000/api/profile', formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            updateUser(formData); // Update parent state
             setIsEditing(false);
         } catch (err) {
-            setError('Failed to update profile.');
+            setError('Failed to update profile. Please try again.');
         }
     };
 
@@ -93,11 +87,14 @@ const Profile = ({ user, updateUser }) => {
                         />
                     </div>
                     <button type="submit">Save Changes</button>
+                    <button type="button" onClick={() => setIsEditing(false)}>
+                        Cancel
+                    </button>
                 </form>
             ) : (
                 <div>
-                    <p>Name: {formData.name}</p>
-                    <p>Email: {formData.email}</p>
+                    <p><strong>Name:</strong> {formData.name}</p>
+                    <p><strong>Email:</strong> {formData.email}</p>
                     <button onClick={() => setIsEditing(true)}>Edit Profile</button>
                 </div>
             )}

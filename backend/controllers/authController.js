@@ -131,7 +131,7 @@ const deleteUserAccount = async (req, res) => {
         // Find the user by ID (from the JWT token)
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User  not found' });
         }
 
         // Optionally, delete all articles associated with the user

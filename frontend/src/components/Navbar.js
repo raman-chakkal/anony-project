@@ -1,48 +1,91 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';  // Importing useNavigate and Link
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import '../styles/Navbar.css';
 
 const Navbar = ({ isAuthenticated }) => {
-    const [query, setQuery] = useState(''); // Store search query
-    const navigate = useNavigate();  // For navigation
+    const [query, setQuery] = useState('');
+    const navigate = useNavigate();
 
     const handleSearch = (e) => {
         e.preventDefault();
-        if (query.trim()) {
-            // Navigate to search results page with query as a parameter
-            navigate(`/search?query=${query}`);
+        if (!query.trim()) {
+            alert('Please enter a search term.');
+            return;
         }
+        navigate(`/search?query=${query.trim()}`);
     };
 
     return (
         <div className="navbar">
-            <div className="logo">anony</div>
-            <div className="search-container">
-                <form onSubmit={handleSearch}>  {/* Wrap search input with form to handle submit */}
-                    <input 
-                        type="text" 
-                        placeholder="Search articles..." 
-                        value={query} 
-                        onChange={(e) => setQuery(e.target.value)} // Update the query state as user types
-                    />
-                    <button type="submit">Search</button>  {/* Button submits form */}
-                </form>
-            </div>
+            <Link to="/" className="logo" aria-label="Home">
+                Anony
+            </Link>
+            <form onSubmit={handleSearch} className="search-form">
+                <input
+                    type="text"
+                    placeholder="Search articles..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    aria-label="Search articles"
+                />
+                <button type="submit" aria-label="Submit search">Search</button>
+            </form>
             <div className="nav-links">
-                <Link to="/">Home</Link>
-                <Link to="/articles">Articles</Link>
-                <Link to="/about">About</Link>
+                <NavLink
+                    to="/"
+                    className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                    aria-label="Go to Home"
+                >
+                    Home
+                </NavLink>
+                <NavLink
+                    to="/articles"
+                    className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                    aria-label="View Articles"
+                >
+                    Articles
+                </NavLink>
+                <NavLink
+                    to="/about"
+                    className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                    aria-label="Learn About Us"
+                >
+                    About
+                </NavLink>
                 {isAuthenticated ? (
-                    <Link to="/dashboard">Dashboard</Link>
+                    <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                        aria-label="Go to Dashboard"
+                    >
+                        Dashboard
+                    </NavLink>
                 ) : (
                     <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
+                        <NavLink
+                            to="/login"
+                            className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                            aria-label="Login"
+                        >
+                            Login
+                        </NavLink>
+                        <NavLink
+                            to="/register"
+                            className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                            aria-label="Register"
+                        >
+                            Register
+                        </NavLink>
                     </>
                 )}
             </div>
         </div>
     );
+};
+
+Navbar.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default Navbar;
